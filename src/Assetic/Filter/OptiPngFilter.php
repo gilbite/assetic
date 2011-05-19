@@ -73,4 +73,9 @@ class OptiPngFilter implements FilterInterface
         unlink($input);
         unlink($output);
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

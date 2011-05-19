@@ -42,4 +42,9 @@ class CallablesFilter implements FilterInterface
             $callable($asset);
         }
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

@@ -47,6 +47,11 @@ abstract class BaseCompressorFilter implements FilterInterface
     {
     }
 
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
+
     /**
      * Compresses a string.
      *

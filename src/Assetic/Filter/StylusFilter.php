@@ -111,4 +111,9 @@ EOF;
     public function filterDump(AssetInterface $asset)
     {
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

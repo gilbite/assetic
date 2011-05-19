@@ -91,4 +91,9 @@ class CssRewriteFilter extends BaseCssFilter
 
         $asset->setContent($content);
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

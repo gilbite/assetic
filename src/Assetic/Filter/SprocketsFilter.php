@@ -139,4 +139,9 @@ EOF;
             return sprintf($format, var_export(dirname($root.'/'.$path), true));
         }
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

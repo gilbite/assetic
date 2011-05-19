@@ -100,4 +100,9 @@ class JpegtranFilter implements FilterInterface
 
         $asset->setContent($proc->getOutput());
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

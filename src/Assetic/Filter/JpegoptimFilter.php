@@ -67,4 +67,9 @@ class JpegoptimFilter implements FilterInterface
 
         unlink($input);
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

@@ -70,4 +70,9 @@ class CssMinFilter implements FilterInterface
 
         $asset->setContent(\CssMin::minify($asset->getContent(), $filters, $plugins));
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

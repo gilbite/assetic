@@ -39,6 +39,12 @@ interface AssetInterface
      *
      * You may provide an additional filter to apply during load.
      *
+     * Filters should be run in an order based on priority, from the outside in:
+     *
+     *  * crust
+     *  * mantle
+     *  * core
+     *
      * @param FilterInterface $additionalFilter An additional filter
      */
     function load(FilterInterface $additionalFilter = null);
@@ -52,6 +58,12 @@ interface AssetInterface
      *
      * If the current asset has not been loaded yet, it should be
      * automatically loaded at this time.
+     *
+     * Filters should be run in an order based on priority, from the inside out:
+     *
+     *  * core
+     *  * mantle
+     *  * crust
      *
      * @param FilterInterface $additionalFilter An additional filter
      *

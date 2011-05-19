@@ -81,4 +81,9 @@ abstract class BaseCompilerFilter implements FilterInterface
     public function filterLoad(AssetInterface $asset)
     {
     }
+
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
 }

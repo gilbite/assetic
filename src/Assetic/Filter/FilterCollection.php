@@ -21,6 +21,8 @@ use Assetic\Asset\AssetInterface;
 class FilterCollection implements FilterInterface, \IteratorAggregate
 {
     private $filters = array();
+    private $sortedFilters = array();
+    private $sorted = false;
 
     public function __construct($filters = array())
     {
@@ -33,7 +35,7 @@ class FilterCollection implements FilterInterface, \IteratorAggregate
      * Checks that the current collection contains the supplied filter.
      *
      * If the supplied filter is another filter collection, each of its
-     * filters will be checked.
+     * child filters will be ensured individually.
      */
     public function ensure(FilterInterface $filter)
     {
@@ -41,32 +43,67 @@ class FilterCollection implements FilterInterface, \IteratorAggregate
             foreach ($filter as $f) {
                 $this->ensure($f);
             }
-        } elseif (!in_array($filter, $this->filters, true)) {
-            $this->filters[] = $filter;
+        } elseif (!in_array($filter, $this->sortedFilters, true)) {
+            $this->filters[$filter->getPriority()][] = $filter;
+            $this->sortedFilters[] = $filter;
+            $this->sorted = false;
         }
     }
 
     public function all()
     {
-        return $this->filters;
+        if (!$this->sorted) {
+            $this->sort();
+        }
+
+        return $this->sortedFilters;
     }
 
     public function filterLoad(AssetInterface $asset)
     {
-        foreach ($this->filters as $filter) {
+        if (!$this->sorted) {
+            $this->sort();
+        }
+
+        foreach ($this->sortedFilters as $filter) {
             $filter->filterLoad($asset);
         }
     }
 
     public function filterDump(AssetInterface $asset)
     {
-        foreach ($this->filters as $filter) {
+        if (!$this->sorted) {
+            $this->sort();
+        }
+
+        foreach (array_reverse($this->sortedFilters) as $filter) {
             $filter->filterDump($asset);
         }
     }
 
+    static public function getPriority()
+    {
+        return FilterInterface::MANTLE;
+    }
+
     public function getIterator()
     {
-        return new \ArrayIterator($this->filters);
+        if (!$this->sorted) {
+            $this->sort();
+        }
+
+        return new \ArrayIterator($this->sortedFilters);
+    }
+
+    private function sort()
+    {
+        if ($filters = $this->filters) {
+            ksort($filters);
+            $this->sortedFilters = call_user_func_array('array_merge', $filters);
+        } else {
+            $this->sortedFilters = array();
+        }
+
+        $this->sorted = true;
     }
 }
